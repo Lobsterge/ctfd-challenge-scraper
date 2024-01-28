@@ -8,7 +8,7 @@ def build_readme(name, category, description, links=None, files=None):
         else:
             links_header = f"\n##### Links: [{links}]({links})"
         
-    if files!=None:
+    if files!=[]:
         files_header = "\n##### Files: "
         for i in files:
             file_name = i.split("?token")[0].split("/")[-1]

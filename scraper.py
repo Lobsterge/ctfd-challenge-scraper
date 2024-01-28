@@ -52,6 +52,10 @@ class Scraper():
         challenges = json.loads(json_challs)
 
         for chall in challenges['data']:
+            
+            if not chall["solved_by_me"]:
+                continue
+
             id = chall["id"]
             name = chall["name"]
             category = chall["category"]
