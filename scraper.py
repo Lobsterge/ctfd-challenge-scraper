@@ -1,5 +1,6 @@
 #!/bin/python3
 import requests,os,re,sys,json,getpass
+from template import build_readme
 
 """
 CTFD Challenge Scrapper & Downloader
@@ -58,19 +59,15 @@ class Scraper():
             print(f"[+] Downloading {name}, [{category}]")
         
             chall_info = json.loads(self.apiGet(f"/challenges/{id}").text)['data']
-            description = chall_info["description"]
+            description = chall_info["description"].replace("\r", "")
             files = chall_info["files"]
             connection_info = chall_info["connection_info"]
             
             chall_dir = directory_name + "/" + category + "/" + name
             os.makedirs(chall_dir)
 
-            with open(chall_dir + "/Readme.md", "w") as output:
-                output.write(f"## {name} [{category}]\n\n")
-                output.write(description + "\n")
-
-                if connection_info != None:
-                    output.write(f"\n```\n{connection_info}\n```\n")
+            with open(chall_dir + "/README.md", "w") as output:
+                output.write(build_readme(name, category, description, connection_info, files))
             
             for file_url in files:
                 file_name = file_url.split("?token")[0].split("/")[-1]
